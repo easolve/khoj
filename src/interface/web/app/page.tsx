@@ -176,7 +176,7 @@ function ChatBodyData(props: ChatBodyDataProps) {
     const [hoveredAgent, setHoveredAgent] = useState<string | null>(null);
     const debouncedHoveredAgent = useDebounce(hoveredAgent, 500);
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-    const [selectedAgent, setSelectedAgent] = useState<string | null>("khoj");
+    const [selectedAgent, setSelectedAgent] = useState<string | null>("AutoEgo");
     const [agentIcons, setAgentIcons] = useState<JSX.Element[]>([]);
     const [agents, setAgents] = useState<AgentData[]>([]);
     const chatInputRef = useRef<HTMLTextAreaElement>(null);
@@ -238,11 +238,19 @@ function ChatBodyData(props: ChatBodyDataProps) {
 
     useEffect(() => {
         const agents = (agentsData || []).filter((agent) => agent !== null && agent !== undefined);
+        if (agents.length >= 1 && agents[0].slug !== "AutoEgo") {
+            agents[0].name = "AutoEgo";
+            // agents[0].slug = "AutoEgo";
+        }
         setAgents(agents);
         // set the first agent, which is always the default agent, as the default for chat
         setSelectedAgent(agents.length > 1 ? agents[0].slug : "khoj");
+        console.log(agents);
 
         // generate colored icons for the available agents
+        // agents.map((agent) => {
+        //     console.log(agent);
+        // });
         const agentIcons = agents.map((agent) => getIconFromIconName(agent.icon, agent.color)!);
         setAgentIcons(agentIcons);
     }, [agentsData]);
@@ -256,7 +264,9 @@ function ChatBodyData(props: ChatBodyDataProps) {
             if (message && !processingMessage) {
                 setProcessingMessage(true);
                 try {
-                    const newConversationId = await createNewConversation(selectedAgent || "khoj");
+                    const newConversationId = await createNewConversation(
+                        selectedAgent || "AutoEgo",
+                    );
                     onConversationIdChange?.(newConversationId);
                     localStorage.setItem("message", message);
                     if (images.length > 0) {
@@ -544,7 +554,7 @@ export default function Home() {
                     )}
                 </header>
                 <div className={`${styles.main} ${styles.chatLayout}`}>
-                    <title>Khoj AI - Your Second Brain</title>
+                    <title>AutoEgo</title>
                     <div className={`${styles.chatBox}`}>
                         <div className={`${styles.chatBoxBody}`}>
                             {!authenticationLoading && (

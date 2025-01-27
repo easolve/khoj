@@ -34,16 +34,16 @@ const items = [
         url: "/",
         icon: Plus,
     },
-    {
-        title: "Agents",
-        url: "/agents",
-        icon: KhojAgentLogo,
-    },
-    {
-        title: "Automations",
-        url: "/automations",
-        icon: KhojAutomationLogo,
-    },
+    // {
+    //     title: "Agents",
+    //     url: "/agents",
+    //     icon: KhojAgentLogo,
+    // },
+    // {
+    //     title: "Automations",
+    //     url: "/automations",
+    //     icon: KhojAutomationLogo,
+    // },
     {
         title: "Search",
         url: "/search",
@@ -87,13 +87,15 @@ export function AppSidebar(props: AppSidebarProps) {
                         {open ? (
                             <SidebarMenuButton>
                                 <a className="p-0 no-underline" href="/">
-                                    <KhojLogoType className="h-auto w-16" />
+                                    {/* <KhojLogoType className="h-auto w-16" /> */}
+                                    AutoEgo
                                 </a>
                             </SidebarMenuButton>
                         ) : (
                             <SidebarMenuButton asChild>
                                 <a className="flex items-center gap-2 no-underline" href="/">
-                                    <KhojLogo className="w-14 h-auto" />
+                                    {/* <KhojLogo className="w-14 h-auto" /> */}
+                                    AutoEgo
                                 </a>
                             </SidebarMenuButton>
                         )}

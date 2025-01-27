@@ -251,6 +251,7 @@ export default function ChatHistory(props: ChatHistoryProps) {
                         };
                         props.setAgent(chatData.response.agent);
                         setData(chatMetadata);
+                        console.log(chatMetadata);
                     }
 
                     setHasMoreMessages(false);
@@ -281,6 +282,7 @@ export default function ChatHistory(props: ChatHistoryProps) {
 
     function constructAgentName() {
         if (!data || !data.agent || !data.agent?.name) return `Agent`;
+        if (data.agent?.name === "Khoj") return `AutoEgo`;
         return data.agent?.name;
     }
 

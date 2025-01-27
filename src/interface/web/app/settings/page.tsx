@@ -677,7 +677,7 @@ export default function SettingsView() {
                                                 </CardHeader>
                                                 <CardContent className="overflow-hidden">
                                                     <p className="pb-4 text-gray-400">
-                                                        What should Khoj refer to you as?
+                                                        What should autoego refer to you as?
                                                     </p>
                                                     <Input
                                                         type="text"
@@ -698,7 +698,7 @@ export default function SettingsView() {
                                                     </Button>
                                                 </CardFooter>
                                             </Card>
-                                            <Card id="subscription" className={cardClassName}>
+                                            {/* <Card id="subscription" className={cardClassName}>
                                                 <CardHeader className="text-xl flex flex-row">
                                                     <CreditCard className="h-7 w-7 mr-2" />
                                                     Subscription
@@ -850,7 +850,7 @@ export default function SettingsView() {
                                                             </Button>
                                                         )}
                                                 </CardFooter>
-                                            </Card>
+                                            </Card> */}
                                         </div>
                                     </div>
                                     <div className="section grid gap-8">
@@ -925,96 +925,6 @@ export default function SettingsView() {
                                                     >
                                                         <CloudSlash className="h-5 w-5 inline mr-1" />
                                                         Disable
-                                                    </Button>
-                                                </CardFooter>
-                                            </Card>
-                                            <Card id="notion" className={cardClassName}>
-                                                <CardHeader className="text-xl flex flex-row">
-                                                    <NotionLogo className="h-7 w-7 mr-2" />
-                                                    Notion
-                                                    {userConfig.enabled_content_source.notion && (
-                                                        <CheckCircle
-                                                            className="h-6 w-6 ml-auto text-green-500"
-                                                            weight="fill"
-                                                        />
-                                                    )}
-                                                </CardHeader>
-                                                <CardContent className="grid gap-4">
-                                                    <p className="text-gray-400">
-                                                        Sync your Notion workspace.
-                                                    </p>
-                                                    {!userConfig.notion_oauth_url && (
-                                                        <Input
-                                                            onChange={(e) =>
-                                                                setNotionToken(e.target.value)
-                                                            }
-                                                            value={notionToken || ""}
-                                                            placeholder="Enter API Key of your Khoj integration on Notion"
-                                                            className="w-full border border-gray-300 rounded-lg px-4 py-6"
-                                                        />
-                                                    )}
-                                                </CardContent>
-                                                <CardFooter className="flex flex-wrap gap-4">
-                                                    {
-                                                        /* Show connect to notion button if notion oauth url setup and user disconnected*/
-                                                        userConfig.notion_oauth_url &&
-                                                        !userConfig.enabled_content_source
-                                                            .notion ? (
-                                                            <Button
-                                                                variant="outline"
-                                                                size="sm"
-                                                                onClick={() => {
-                                                                    window.open(
-                                                                        userConfig.notion_oauth_url,
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Plugs className="h-5 w-5 inline mr-1" />
-                                                                Connect
-                                                            </Button>
-                                                        ) : /* Show sync button if user connected to notion and API key unchanged */
-                                                        userConfig.enabled_content_source.notion &&
-                                                          notionToken ===
-                                                              userConfig.notion_token ? (
-                                                            <Button
-                                                                variant="outline"
-                                                                size="sm"
-                                                                onClick={() =>
-                                                                    syncContent("notion")
-                                                                }
-                                                            >
-                                                                <ArrowsClockwise className="h-5 w-5 inline mr-1" />
-                                                                Sync
-                                                            </Button>
-                                                        ) : /* Show set API key button notion oauth url not set setup */
-                                                        !userConfig.notion_oauth_url ? (
-                                                            <Button
-                                                                variant="outline"
-                                                                size="sm"
-                                                                onClick={saveNotionToken}
-                                                                disabled={
-                                                                    notionToken ===
-                                                                    userConfig.notion_token
-                                                                }
-                                                            >
-                                                                <FloppyDisk className="h-5 w-5 inline mr-1" />
-                                                                {(userConfig.enabled_content_source
-                                                                    .notion &&
-                                                                    "Update API Key") ||
-                                                                    "Set API Key"}
-                                                            </Button>
-                                                        ) : (
-                                                            <></>
-                                                        )
-                                                    }
-                                                    <Button
-                                                        variant="outline"
-                                                        size="sm"
-                                                        className={`${userConfig.notion_token || "hidden"}`}
-                                                        onClick={() => disconnectContent("notion")}
-                                                    >
-                                                        <CloudSlash className="h-5 w-5 inline mr-1" />
-                                                        Disconnect
                                                     </Button>
                                                 </CardFooter>
                                             </Card>
@@ -1107,146 +1017,6 @@ export default function SettingsView() {
                                                     </CardFooter>
                                                 </Card>
                                             )}
-                                        </div>
-                                    </div>
-                                    <div className="section grid gap-8">
-                                        <div id="clients" className="text-2xl">
-                                            Clients
-                                        </div>
-                                        <div className="cards flex flex-col flex-wrap gap-8">
-                                            {!userConfig.anonymous_mode && <ApiKeyCard />}
-                                            <Card className={`${cardClassName} lg:w-2/3`}>
-                                                <CardHeader className="text-xl flex flex-row">
-                                                    <WhatsappLogo className="h-7 w-7 mr-2" />
-                                                    Chat on Whatsapp
-                                                    {(numberValidationState ===
-                                                        PhoneNumberValidationState.Verified && (
-                                                        <CheckCircle
-                                                            weight="bold"
-                                                            className="h-4 w-4 ml-1 text-green-400"
-                                                        />
-                                                    )) ||
-                                                        (numberValidationState !==
-                                                            PhoneNumberValidationState.Setup && (
-                                                            <ExclamationMark
-                                                                weight="bold"
-                                                                className="h-4 w-4 ml-1 text-yellow-400"
-                                                            />
-                                                        ))}
-                                                </CardHeader>
-                                                <CardContent className="grid gap-4">
-                                                    <p className="text-gray-400">
-                                                        Connect your number to chat with Khoj on
-                                                        WhatsApp. Learn more about the integration{" "}
-                                                        <a href="https://docs.khoj.dev/clients/whatsapp">
-                                                            here
-                                                        </a>
-                                                        .
-                                                    </p>
-                                                    <div>
-                                                        <IntlTelInput
-                                                            initialValue={phoneNumber || ""}
-                                                            onChangeNumber={setPhoneNumber}
-                                                            disabled={
-                                                                numberValidationState ===
-                                                                PhoneNumberValidationState.VerifyOTP
-                                                            }
-                                                            initOptions={{
-                                                                separateDialCode: true,
-                                                                initialCountry: "af",
-                                                                utilsScript:
-                                                                    "https://assets.khoj.dev/intl-tel-input%4023.8.0_build_js_utils.js",
-                                                                containerClass: `${styles.phoneInput}`,
-                                                            }}
-                                                        />
-                                                        {numberValidationState ===
-                                                            PhoneNumberValidationState.VerifyOTP && (
-                                                            <>
-                                                                <p>{`Enter the OTP sent to your number: ${phoneNumber}`}</p>
-                                                                <InputOTP
-                                                                    autoFocus={true}
-                                                                    maxLength={6}
-                                                                    value={otp || ""}
-                                                                    onChange={setOTP}
-                                                                    onComplete={() =>
-                                                                        setNumberValidationState(
-                                                                            PhoneNumberValidationState.VerifyOTP,
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <InputOTPGroup>
-                                                                        <InputOTPSlot index={0} />
-                                                                        <InputOTPSlot index={1} />
-                                                                        <InputOTPSlot index={2} />
-                                                                        <InputOTPSlot index={3} />
-                                                                        <InputOTPSlot index={4} />
-                                                                        <InputOTPSlot index={5} />
-                                                                    </InputOTPGroup>
-                                                                </InputOTP>
-                                                            </>
-                                                        )}
-                                                    </div>
-                                                </CardContent>
-                                                <CardFooter className="flex flex-wrap gap-4">
-                                                    {(numberValidationState ===
-                                                        PhoneNumberValidationState.VerifyOTP && (
-                                                        <Button
-                                                            variant="outline"
-                                                            onClick={verifyOTP}
-                                                        >
-                                                            Verify
-                                                        </Button>
-                                                    )) || (
-                                                        <Button
-                                                            variant="outline"
-                                                            disabled={
-                                                                !phoneNumber ||
-                                                                (phoneNumber ===
-                                                                    userConfig.phone_number &&
-                                                                    numberValidationState ===
-                                                                        PhoneNumberValidationState.Verified) ||
-                                                                !isValidPhoneNumber(phoneNumber)
-                                                            }
-                                                            onClick={sendOTP}
-                                                        >
-                                                            {!userConfig.phone_number ? (
-                                                                <>
-                                                                    <Plugs className="inline mr-2" />
-                                                                    Setup Whatsapp
-                                                                </>
-                                                            ) : !phoneNumber ||
-                                                              (phoneNumber ===
-                                                                  userConfig.phone_number &&
-                                                                  numberValidationState ===
-                                                                      PhoneNumberValidationState.Verified) ||
-                                                              !isValidPhoneNumber(phoneNumber) ? (
-                                                                <>
-                                                                    <PlugsConnected className="inline mr-2 text-green-400" />
-                                                                    Switch Number
-                                                                </>
-                                                            ) : (
-                                                                <>
-                                                                    Send OTP{" "}
-                                                                    <ArrowRight
-                                                                        className="inline ml-2"
-                                                                        weight="bold"
-                                                                    />
-                                                                </>
-                                                            )}
-                                                        </Button>
-                                                    )}
-                                                    {numberValidationState ===
-                                                        PhoneNumberValidationState.Verified && (
-                                                        <Button
-                                                            variant="outline"
-                                                            onClick={() => disconnectNumber()}
-                                                        >
-                                                            <CloudSlash className="h-5 w-5 mr-2" />
-                                                            Disconnect
-                                                        </Button>
-                                                    )}
-                                                </CardFooter>
-                                            </Card>
                                         </div>
                                     </div>
                                 </div>
